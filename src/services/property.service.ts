@@ -6,14 +6,13 @@ import { Property } from "../entities/property.entity";
 import { AppError } from "../errors";
 import { IPropertyRequest } from "../interfaces/properties";
 import addressService from "./address.service";
+import categoryService from "./category.service";
 
 class PropertyService {
   private propertyRepo: Repository<Property>;
-  private categoryRepo: Repository<Category>;
 
   constructor() {
     this.propertyRepo = AppDataSource.getRepository(Property);
-    this.categoryRepo = AppDataSource.getRepository(Category);
   }
 
   create = async ({
@@ -22,11 +21,9 @@ class PropertyService {
     ...payload
   }: IPropertyRequest): Promise<Property> => {
     const newAddress: Address = await addressService.create(address);
-    const category = await this.categoryRepo.findOneBy({ id: categoryId });
-
-    if (!category) {
-      throw new AppError(404, "Category not found.");
-    }
+    const category: Category = await categoryService.retrieveProperty(
+      categoryId
+    );
 
     const property = this.propertyRepo.create({
       ...payload,
