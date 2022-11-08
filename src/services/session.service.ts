@@ -17,13 +17,13 @@ class SessionService {
     const foundUser = await this.userRepo.findOneBy({ email });
 
     if (!foundUser) {
-      throw new AppError(401, "Invalid credentials.");
+      throw new AppError(403, "Invalid credentials.");
     }
 
     const comparePasswords = await compare(password, foundUser.password);
 
     if (!comparePasswords) {
-      throw new AppError(401, "Invalid credentials.");
+      throw new AppError(403, "Invalid credentials.");
     }
 
     const token = sign(
