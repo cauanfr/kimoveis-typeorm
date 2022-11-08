@@ -1,3 +1,5 @@
 import sessionService from "./session.service";
+import userService from "./user.service";
+import categoryService from "./category.service";
 
-export { sessionService };
+export { sessionService, categoryService, userService };

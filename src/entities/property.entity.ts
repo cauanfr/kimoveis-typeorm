@@ -35,6 +35,6 @@ export class Property {
   @JoinColumn()
   address: Address;
 
-  @ManyToOne(() => Category)
+  @ManyToOne(() => Category, (c) => c.properties)
   category: Category;
 }

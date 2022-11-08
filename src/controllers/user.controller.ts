@@ -1,24 +1,24 @@
 import { Request, Response } from "express";
-import userService from "../services/user.service";
+import { userService } from "../services";
 
 class UserController {
-  createUser = async (req: Request, res: Response) => {
-    const user = await userService.createUser(req.body);
+  create = async (req: Request, res: Response) => {
+    const user = await userService.create(req.body);
     return res.status(201).json(user);
   };
 
-  getUsers = async (req: Request, res: Response) => {
-    const users = await userService.getUsers();
+  retrieve = async (req: Request, res: Response) => {
+    const users = await userService.retrieve();
     return res.status(200).json(users);
   };
 
-  updateUser = async (req: Request, res: Response) => {
-    const user = await userService.updateUser(req.body, req.foundUser);
+  update = async (req: Request, res: Response) => {
+    const user = await userService.update(req.body, req.foundUser);
     return res.status(200).json(user);
   };
 
-  deleteUser = async (req: Request, res: Response) => {
-    await userService.deleteUser(req.foundUser);
+  delete = async (req: Request, res: Response) => {
+    await userService.delete(req.foundUser);
     return res.status(204).json();
   };
 }

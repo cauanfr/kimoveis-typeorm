@@ -9,26 +9,26 @@ import {
 
 const userRouter = Router();
 
-userRouter.post("", userController.createUser);
+userRouter.post("", userController.create);
 userRouter.get(
   "",
   validateTokenMiddleware,
   admPermissionMiddleware,
-  userController.getUsers
+  userController.retrieve
 );
 userRouter.patch(
   "/:id",
   foundUserMiddleware,
   validateTokenMiddleware,
   admOrSameIdPermissionMiddleware,
-  userController.updateUser
+  userController.update
 );
 userRouter.delete(
   "/:id",
   foundUserMiddleware,
   validateTokenMiddleware,
   admPermissionMiddleware,
-  userController.deleteUser
+  userController.delete
 );
 
 export default userRouter;

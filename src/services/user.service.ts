@@ -32,7 +32,7 @@ class UserService {
     }
   };
 
-  createUser = async (payload: IUserRequest): Promise<IUser> => {
+  create = async (payload: IUserRequest): Promise<IUser> => {
     const foundUser = await this.userRepo.findOneBy({ email: payload.email });
 
     if (foundUser) {
@@ -47,19 +47,19 @@ class UserService {
     return this.userWOPassword(user);
   };
 
-  getUsers = async (): Promise<IUser[]> => {
+  retrieve = async (): Promise<IUser[]> => {
     const users = await this.userRepo.find();
     return this.usersWOPassword(users);
   };
 
-  updateUser = async (params: IUserUpdate, user: User): Promise<IUser> => {
+  update = async (params: IUserUpdate, user: User): Promise<IUser> => {
     this.cantUpdateFields(Object.keys(params), ["id", "isAdm", "isActive"]);
     await this.userRepo.update(user.id, { ...params });
 
     return this.userWOPassword(user);
   };
 
-  deleteUser = async (user: User): Promise<void> => {
+  delete = async (user: User): Promise<void> => {
     if (!user.isActive) {
       throw new AppError(400, "User not found.");
     }
