@@ -1,26 +1,41 @@
-import { DataSource } from "typeorm"
-import "dotenv/config"
+import { DataSource, DataSourceOptions } from "typeorm";
+import path from "path";
 
-const AppDataSource = new DataSource(
-    process.env.NODE_ENV === "test" ?
-    {
-        type: "sqlite",
-        database: ":memory:",
-        synchronize: true,
-        entities: ["src/entities/*.ts"]
-    } :
-    {
-        type: "postgres",
-        host: process.env.HOST,
-        port: 5432,
-        username: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
-        database: process.env.POSTGRES_DB,
-        logging: true,
-        synchronize: false,
-        entities: ['src/entities/*.ts'],
-        migrations: ['src/migrations/*.ts']
-    }
-)
+const AppDataSourceConfig = (): DataSource => {
+  const isTest = process.env.NODE_ENV === "test";
+  const isProd = process.env.NODE_ENV === "prod";
 
-export default AppDataSource
+  const defaultSettings: DataSourceOptions = {
+    type: "postgres",
+    url: process.env.DATABASE_URL,
+    logging: true,
+    synchronize: false,
+    entities: [path.join(__dirname, "./entities/*.{js,ts}")],
+    migrations: [path.join(__dirname, "./migrations/*.{js,ts}")],
+  };
+
+  if (isTest) {
+    return new DataSource({
+      type: "sqlite",
+      database: ":memory:",
+      synchronize: true,
+      entities: ["src/entities/*.ts"],
+    });
+  }
+
+  if (isProd) {
+    const prodSettings: DataSourceOptions = {
+      ...defaultSettings,
+      ssl: { rejectUnauthorized: false },
+      logging: false,
+    };
+
+    return new DataSource(prodSettings);
+  }
+
+  return new DataSource(defaultSettings);
+};
+
+const AppDataSource = AppDataSourceConfig()
+
+export default AppDataSource;
