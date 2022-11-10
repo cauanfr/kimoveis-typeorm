@@ -13,7 +13,7 @@ categoryRouter.post(
   admPermissionMiddleware,
   categoryController.create
 );
-categoryRouter.get("", categoryController.retrieve);
-categoryRouter.get("/:id/properties", categoryController.retrieveProperty);
+categoryRouter.get("", categoryController.list);
+categoryRouter.get("/:id/properties", categoryController.retrieve);
 
 export default categoryRouter;

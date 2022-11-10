@@ -13,6 +13,6 @@ propertyRouter.post(
   admPermissionMiddleware,
   propertyController.create
 );
-propertyRouter.get("", propertyController.retrieve);
+propertyRouter.get("", propertyController.list);
 
 export default propertyRouter;

@@ -7,8 +7,8 @@ class UserController {
     return res.status(201).json(user);
   };
 
-  retrieve = async (req: Request, res: Response) => {
-    const users = await userService.retrieve();
+  list = async (req: Request, res: Response) => {
+    const users = await userService.list();
     return res.status(200).json(users);
   };
 

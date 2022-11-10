@@ -27,9 +27,9 @@ class CategoryService {
     return category;
   };
 
-  retrieve = async (): Promise<Category[]> => this.categoryRepo.find();
+  list = async (): Promise<Category[]> => this.categoryRepo.find();
 
-  retrieveProperty = async (categoryId: string): Promise<Category> => {
+  retrieve = async (categoryId: string): Promise<Category> => {
     const category = await this.categoryRepo.findOne({
       where: { id: categoryId },
       relations: { properties: true },

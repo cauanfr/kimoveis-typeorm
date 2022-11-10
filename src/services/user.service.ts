@@ -47,9 +47,19 @@ class UserService {
     return this.userWOPassword(user);
   };
 
-  retrieve = async (): Promise<IUser[]> => {
+  list = async (): Promise<IUser[]> => {
     const users = await this.userRepo.find();
     return this.usersWOPassword(users);
+  };
+
+  retrieve = async (userId: string) => {
+    const foundUser = await this.userRepo.findOneBy({ id: userId });
+
+    if (!foundUser) {
+      throw new AppError(404, "User not found.");
+    }
+
+    return foundUser;
   };
 
   update = async (params: IUserUpdate, user: User): Promise<IUser> => {

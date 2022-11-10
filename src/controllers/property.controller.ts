@@ -7,8 +7,8 @@ class PropertyController {
     return res.status(201).json(property);
   };
 
-  retrieve = async (req: Request, res: Response) => {
-    const properties = await propertyService.retrieve();
+  list = async (req: Request, res: Response) => {
+    const properties = await propertyService.list();
     return res.status(200).json(properties);
   };
 }

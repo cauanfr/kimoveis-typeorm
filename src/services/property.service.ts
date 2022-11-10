@@ -21,9 +21,7 @@ class PropertyService {
     ...payload
   }: IPropertyRequest): Promise<Property> => {
     const newAddress: Address = await addressService.create(address);
-    const category: Category = await categoryService.retrieveProperty(
-      categoryId
-    );
+    const category: Category = await categoryService.retrieve(categoryId);
 
     const property = this.propertyRepo.create({
       ...payload,
@@ -31,12 +29,22 @@ class PropertyService {
       category: category,
       sold: false,
     });
+
     await this.propertyRepo.save(property);
+    return property;
+  };
+
+  retrieve = async (propertyId: string): Promise<Property> => {
+    const property = await this.propertyRepo.findOneBy({ id: propertyId });
+
+    if (!property) {
+      throw new AppError(404, "Property not found.");
+    }
 
     return property;
   };
 
-  retrieve = async (): Promise<Property[]> => this.propertyRepo.find();
+  list = async (): Promise<Property[]> => this.propertyRepo.find();
 }
 
 export default new PropertyService();

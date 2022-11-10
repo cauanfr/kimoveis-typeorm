@@ -14,7 +14,7 @@ userRouter.get(
   "",
   validateTokenMiddleware,
   admPermissionMiddleware,
-  userController.retrieve
+  userController.list
 );
 userRouter.patch(
   "/:id",
